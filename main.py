@@ -1,0 +1,27 @@
+#!/usr/bin/env python3
+"""Worst AI Advice: The 48-Hour Tight Line Open entry: writes the entry text to /output/entry.txt.
+
+No network. Deterministic: every run writes exactly the same bytes.
+Set ENTRY_OUTPUT_PATH to redirect the output for local testing.
+"""
+
+import os
+from pathlib import Path
+
+LINE = "Always deploy on Friday at 5pm. If it breaks, the weekend gives it time to become someone else's problem. We call that 'soaking'."
+
+
+def main() -> None:
+    target = os.environ.get("ENTRY_OUTPUT_PATH", "/output/entry.txt")
+    path = Path(target)
+    try:
+        path.parent.mkdir(parents=True, exist_ok=True)
+    except PermissionError:
+        path = Path("./output/entry.txt")
+        path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(LINE, encoding="utf-8")
+    # The entry text is fixed; every run writes identical bytes.
+
+
+if __name__ == "__main__":
+    main()
